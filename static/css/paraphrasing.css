@@ -1,0 +1,367 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.keyword-ribbon {
+    margin: 5px;
+    display: inline-block;
+    color: grey;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #F8F8F8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.keyword-ribbon-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 240px); /* Adjust to fit your layout */
+}
+
+.keyword-green {
+    background-color: green;
+}
+
+.keyword-grey {
+    background-color: white;
+}
+
+.keyword-red {
+    background-color: red;
+    color: white;
+}
+
+.issue {
+    color: lightcoral;
+}
+
+.suggestion {
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.suggestion-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 320px); /* Adjust to fit your layout */
+}
+
+#suggestion-btn {
+    padding: 10px 20px;
+    background-color: #484848;
+    color: white;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px; /* Adjusted width */
+    height: calc(100vh - 60px); /* Adjusted height */
+    overflow-y: auto; /* Vertical scrollbar for sidebar */
+    color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.sidebar_btn_group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Spacing between buttons */
+}
+
+.sidebar_btn {
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+#seo-btn {}
+
+#readability-btn {
+    margin-top: 10px; /* Adjust spacing */
+}
+
+.sidebar_content {
+    padding: 20px;
+}
+
+.main {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+}
+.line-highlight {
+        background-color: red; /* Light red for readability */
+    }
+
+.suggestion-red {
+        background-color: red; /* Lighter red for suggested changes */
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.keyword-ribbon {
+    margin: 5px;
+    display: inline-block;
+    color: grey;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #F8F8F8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.keyword-ribbon-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 240px); /* Adjust to fit your layout */
+}
+
+.keyword-green {
+    background-color: green;
+}
+
+.keyword-grey {
+    background-color: white;
+}
+
+.keyword-red {
+    background-color: red;
+    color: white;
+}
+
+.issue {
+    color: red;
+}
+
+.suggestion {
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.suggestion-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 320px); /* Adjust to fit your layout */
+}
+
+#suggestion-btn {
+    padding: 10px 20px;
+    background-color: #484848;
+    color: white;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px; /* Adjusted width */
+    height: calc(100vh - 60px); /* Adjusted height */
+    overflow-y: auto; /* Vertical scrollbar for sidebar */
+    color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.sidebar_btn_group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Spacing between buttons */
+}
+
+.sidebar_btn {
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+#seo-btn {}
+
+#readability-btn {
+    margin-top: 10px; /* Adjust spacing */
+}
+
+.sidebar_content {
+    padding: 20px;
+}
+
+.main {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+}
+.line-highlight {
+        background-color: red; /* Light red for readability */
+    }
+
+.suggestion-red {
+        background-color: #d00000; /* Lighter red for suggested changes */
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.keyword-ribbon {
+    margin: 5px;
+    display: inline-block;
+    color: grey;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #F8F8F8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.keyword-ribbon-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 240px); /* Adjust to fit your layout */
+}
+
+.keyword-green {
+    background-color: green;
+}
+
+.keyword-grey {
+    background-color: white;
+}
+
+.keyword-red {
+    background-color: red;
+    color: white;
+}
+
+.issue {
+    color: rgba(124, 2, 2, 0.74);
+}
+
+.suggestion {
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.suggestion-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 320px); /* Adjust to fit your layout */
+}
+
+#suggestion-btn {
+    padding: 10px 20px;
+    background-color: rgb(50, 119, 236);
+    color: white;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border-radius: 2px;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px; /* Adjusted width */
+    height: calc(100vh - 60px); /* Adjusted height */
+    overflow-y: auto; /* Vertical scrollbar for sidebar */
+    color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.sidebar_btn_group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Spacing between buttons */
+}
+
+.sidebar_btn {
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+#seo-btn {}
+
+#readability-btn {
+    margin-top: 10px; /* Adjust spacing */
+}
+
+.sidebar_content {
+    padding: 20px;
+}
+
+.main {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+}
+.line-highlight {
+        background-color: red; /* Light red for readability */
+    }
+
+.suggestion-red {
+        background-color: red; /* Lighter red for suggested changes */
+    }
+.suggestion-container {
+    overflow-y: auto; /* Vertical scrollbar if needed */
+    max-height: calc(100vh - 120px); /* Adjust according to your layout */
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#save-btn{
+    padding: 10px 20px;
+    background-color: rgb(50, 119, 236);
+    color: white;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border-radius: 2px;
+
+}
+#save-btn:hover {
+    background-color: rgb(122, 133, 147) ;
+    color: black;
+    font-size: 20px;
+    
+    
+
+}
+#suggestion-btn:hover {
+    background-color: rgb(122, 133, 147) ;
+    color: black;
+    font-size: 20px;
+    
+    
+
+}

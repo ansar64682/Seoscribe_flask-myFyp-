@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Project</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input[type="text"], textarea {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+        input[type="submit"] {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <label for="title">{{ form.title.label }}</label>
+        {{ form.title(id='title') }}<br>
+        <label for="description">{{ form.description.label }}</label>
+        {{ form.description(id='description') }}<br>
+
+        <!-- CKEditor for text editing -->
+      
+
+        <!-- Display long-tail keywords if available -->
+        {% if long_tail_keywords %}
+        <label for="long_tail_keywords">Long Tail Keywords</label>
+        <ul id="long_tail_keywords">
+            {% for keyword in long_tail_keywords %}
+            <li>{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- Display LSI keywords if available -->
+        {% if lsi_keywords %}
+        <label for="lsi_keywords">LSI Keywords</label>
+        <ul id="lsi_keywords">
+            {% for keyword in lsi_keywords %}
+            <li>{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {{ form.submit() }}
+    </form>
+
+    <!-- Include CKEditor script -->
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Keyword Generation</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/keywordtool.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+   {% include 'navbar.html'%}
+
+    <div class="container">
+        <h1 id="Heading">Keyword Generation</h1>
+        <form id="key_form" method="POST" action="{{ url_for('keyword_gen') }}">
+            {{ form.csrf_token }}
+            <label for="keyword">Enter Keyword:</label>
+            <input type="text" id="keyword" name="keyword" required>
+            <button id="gen-btn" type="submit">Generate Keywords</button>
+        </form>
+
+        {% if long_tail_keywords %}
+            <div class="keywords">
+                <h2>Long Tail Keywords</h2>
+                <ul>
+                    {% for keyword in long_tail_keywords %}
+                        <li>{{ keyword }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if lsi_keywords %}
+            <div class="keywords">
+                <h2>LSI Keywords</h2>
+                <ul>
+                    {% for keyword in lsi_keywords %}
+                        <li>{{ keyword }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

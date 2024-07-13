@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Writing Assistant Tool</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/paraphrasing.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <style>
+        /* Custom styles for scrollbar */
+        .suggestions-container {
+            max-height: 300px; /* Adjust height as needed */
+            overflow-y: auto;
+            padding-right: 10px; /* Add padding to align scrollbar with content */
+        }
+        .keyword-ribbon {
+            margin-right: 5px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .keyword-green {
+            background-color: #6fbf73;
+            color: #fff;
+        }
+        .keyword-grey {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+        .keyword-red {
+            background-color: #e57373;
+            color: #fff;
+        }
+        .issue {
+            background-color: #e57373;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-left: 4px solid red;
+            color: black;
+        }
+        .suggestion {
+            background-color: #e0f7fa;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-left: 4px solid #00bcd4;
+        }
+        .sidebar_btn_group {
+            margin-bottom: 10px;
+        }
+        .sidebar_btn {
+            margin-right: 10px;
+            padding: 8px 15px;
+            background-color: #2196f3;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .sidebar_btn:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
+<body>
+{% include 'navbar.html'%}
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar_btn_group">
+                <button class="sidebar_btn" id="seo-btn">SEO</button>
+                <button class="sidebar_btn" id="readability-btn">Readability</button>
+            </div>
+            <div class="sidebar_content">
+                <div id="seo-section">
+                    <h3 style="margin-bottom: 10px;">Long Tail Keywords</h3>
+                    <div id="long-tail-keywords">
+                        {% for keyword in long_tail_keywords %}
+                        <span class="keyword-ribbon keyword-green">{{ keyword }}</span>
+                        {% endfor %}
+                    </div>
+                    <h3 style="margin: 10px 0;">LSI Keywords</h3>
+                    <div id="lsi-keywords">
+                        {% for keyword in lsi_keywords %}
+                        <span class="keyword-ribbon keyword-green">{{ keyword }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="readability-section" style="display:none;">
+                    <h3 style="margin: 10px 0;">Long Sentences</h3>
+                    <div id="long-sentences"></div>
+                    <h3 style="margin: 10px 0;">Hard Vocabulary</h3>
+                    <div id="hard-vocabulary"></div>
+                    <h3 style="margin: 10px 0;">Passive Voice Sentences</h3>
+                    <div id="passive-voice"></div>
+                    <h3 style="margin: 10px 0;">Active Voice Suggestions</h3>
+                    <div id="active-voice"></div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="content">
+                <h1 style="margin-bottom: 10px;">Writing Assistant Tool</h1>
+                <div class="form-group">
+                    <textarea class="form-control" id="editor">{{ latest_entry.original_text }}</textarea>
+                </div>
+                <div class="form-group suggestions-container">
+                    <button class="btn btn-primary" id="suggestion-btn">Get Suggestions</button>
+                    <button class="btn btn-success" id="save-btn">Save</button>
+                    <div id="suggestion-content"></div>
+                </div>
+            </div>
+
+            <div class="rightbar" id="suggestions">
+                <div class="suggestion-container">
+                    <h3 style="margin: 10px 0;">Suggestions</h3>
+                    <div id="suggestion-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        CKEDITOR.replace('editor');
+        const editor = CKEDITOR.instances.editor;
+
+        const longTailKeywords = {{ long_tail_keywords | tojson }};
+        const lsiKeywords = {{ lsi_keywords | tojson }};
+        const projectId = {{ project_id }};
+
+      function updateKeywords() {
+    const content = editor.getData();
+    const headings = content.match(/<h[1-4][^>]*>(.*?)<\/h[1-4]>/g) || [];
+    const paragraphs = content.match(/<p[^>]*>(.*?)<\/p>/g) || [];
+    const totalWords = content.split(/\s+/).length;
+    const totalHeadingWords = headings.join(' ').split(/\s+/).length;
+    const totalParagraphWords = paragraphs.join(' ').split(/\s+/).length;
+
+    function calculateDensity(occurrences, wordCount) {
+        return (occurrences / wordCount) * 100;
+    }
+
+    function getColorClass(density, threshold) {
+        if (density > threshold) {
+            return 'keyword-red';
+        } else if (density > 0) {
+            return 'keyword-green';
+        } else {
+            return 'keyword-grey';
+        }
+    }
+
+    // Update Long Tail Keywords in Headings
+    const longTailContainer = document.getElementById('long-tail-keywords');
+    longTailContainer.innerHTML = '';
+    longTailKeywords.forEach(keyword => {
+        let occurrences = 0;
+        headings.forEach(heading => {
+            occurrences += (heading.match(new RegExp(keyword, 'gi')) || []).length;
+        });
+        const density = calculateDensity(occurrences, totalHeadingWords);
+        const keywordClass = getColorClass(density, 1.5); // Adjust the threshold for headings if needed
+        longTailContainer.innerHTML += `<span class="keyword-ribbon ${keywordClass}">${keyword}</span>`;
+    });
+
+    // Update LSI Keywords in Paragraphs
+    const lsiContainer = document.getElementById('lsi-keywords');
+    lsiContainer.innerHTML = '';
+    lsiKeywords.forEach(keyword => {
+        let occurrences = 0;
+        paragraphs.forEach(paragraph => {
+            occurrences += (paragraph.match(new RegExp(keyword, 'gi')) || []).length;
+        });
+        const density = calculateDensity(occurrences, totalParagraphWords);
+        const keywordClass = getColorClass(density, 1.5); // Adjust the threshold for paragraphs if needed
+        lsiContainer.innerHTML += `<span class="keyword-ribbon ${keywordClass}">${keyword}</span>`;
+    });
+
+    // Update Readability
+    const longSentencesContainer = document.getElementById('long-sentences');
+    const hardVocabularyContainer = document.getElementById('hard-vocabulary');
+    const passiveVoiceContainer = document.getElementById('passive-voice');
+    const activeVoiceContainer = document.getElementById('active-voice');
+    longSentencesContainer.innerHTML = '';
+    hardVocabularyContainer.innerHTML = '';
+    passiveVoiceContainer.innerHTML = '';
+    activeVoiceContainer.innerHTML = '';
+
+    const sentences = content.split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s/g);
+    sentences.forEach(sentence => {
+        if (sentence.split(' ').length > 20) {
+            longSentencesContainer.innerHTML += `<p class="issue">${sentence}</p>`;
+        }
+        const words = sentence.split(' ');
+        words.forEach(word => {
+            if (word.length > 10) {
+                hardVocabularyContainer.innerHTML += `<p class="issue">${word}</p>`;
+            }
+        });
+        if (/(\bwas\b|\bwere\b|\bam\b|\bbeen\b|\bbeing\b)/.test(sentence)) {
+            passiveVoiceContainer.innerHTML += `<p class="issue">${sentence}</p>`;
+        }
+        if (/(.+ing\s+)/.test(sentence)) {
+            activeVoiceContainer.innerHTML += `<p class="issue">${sentence}</p>`;
+        }
+    });
+}
+
+editor.on('change', function () {
+    updateKeywords();
+});
+
+// Initial update of keywords and readability on page load
+updateKeywords();
+
+
+        function refineSuggestions(suggestions) {
+            return suggestions.split('\n').map(s => s.trim()).filter(s => s).join('\n');
+        }
+
+        editor.on('change', function () {
+            updateKeywords();
+        });
+
+        document.getElementById('seo-btn').addEventListener('click', function () {
+            document.getElementById('seo-section').style.display = 'block';
+            document.getElementById('readability-section').style.display = 'none';
+        });
+
+        document.getElementById('readability-btn').addEventListener('click', function () {
+            document.getElementById('seo-section').style.display = 'none';
+            document.getElementById('readability-section').style.display = 'block';
+        });
+
+        document.getElementById('suggestion-btn').addEventListener('click', function () {
+            const editorContent = editor.getData();
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch(`/project/${projectId}/paraphrase`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ editor_content: editorContent })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('suggestions').style.display = 'block';
+                const suggestionContent = document.getElementById('suggestion-content');
+                suggestionContent.innerHTML = '';
+
+                const refinedSuggestions = refineSuggestions(data.suggestions || '');
+                refinedSuggestions.split('\n').forEach(suggestion => {
+                    suggestionContent.innerHTML += `<div class="suggestion">${suggestion}</div>`;
+                });
+
+                // Show readability suggestions
+                if (data.readability) {
+                    document.getElementById('long-sentences').innerHTML = '';
+                    document.getElementById('hard-vocabulary').innerHTML = '';
+                    document.getElementById('passive-voice').innerHTML = '';
+                    document.getElementById('active-voice').innerHTML = '';
+
+                    data.readability.long_sentences.forEach(sentence => {
+                        document.getElementById('long-sentences').innerHTML += `<p class="issue">${sentence}</p>`;
+                    });
+                    data.readability.hard_vocabulary.forEach(word => {
+                        document.getElementById('hard-vocabulary').innerHTML += `<p class="issue">${word}</p>`;
+                    });
+                    data.readability.passive_voice.forEach(sentence => {
+                        document.getElementById('passive-voice').innerHTML += `<p class="issue">${sentence}</p>`;
+                    });
+                    data.readability.active_voice.forEach(sentence => {
+                        document.getElementById('active-voice').innerHTML += `<p class="issue">${sentence}</p>`;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('save-btn').addEventListener('click', function () {
+            const editorContent = editor.getData();
+            const longTailKeywords = Array.from(document.getElementById('long-tail-keywords').getElementsByClassName('keyword-ribbon')).map(span => span.textContent);
+            const lsiKeywords = {{ lsi_keywords | tojson }};
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch(`/project/${projectId}/save_content`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    editor_content: editorContent,
+                    long_tail_keywords: longTailKeywords,
+                    lsi_keywords: lsiKeywords
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Save successful:', data.message);
+                alert('Entry saved successfully!');
+            })
+            .catch(error => {
+                console.error('Content Saved Successfully', error);
+                alert('Content saved successfully except the suggestions\nYou can generate the suggestions by Clicking Get Suggestion!');
+            });
+        });
+
+        // Initial update of keywords and readability on page load
+        updateKeywords();
+
+    </script>
+</body>
+
+</html>

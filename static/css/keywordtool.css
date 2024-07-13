@@ -1,0 +1,95 @@
+  /* General styles */
+  body {
+    font-family:Arial, Helvetica, sans-serif; /* Example of using the preferred font family */
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-top: 60px;
+}
+
+/* Navbar styles */
+.navbar {
+    overflow: hidden;
+    
+    padding: 10px 0;
+    padding-right: 50px;
+}
+
+.navbar a {
+    float: right;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color:grey;
+    color: white;
+    border-radius:5px ;
+    font-size: 20px;
+}
+
+/* Keyword section */
+.keywords {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: auto; /* Enable vertical scrollbar */
+}
+
+.keywords ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.keywords li {
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+}
+#Heading{
+text-align:center;
+}
+#key_form{
+    text-align: center;
+}
+#keyword{
+width:50%;
+}
+#gen-btn{
+    background-color: grey;
+    color: whitesmoke;
+    padding: 4px;
+    margin-left: 6px;
+    font-size: 16px;
+    border-radius: 3px;
+
+}
+#gen-btn:hover{
+    background-color: black;
+    color: white;
+    padding: 6px;
+    margin-left: 6px;
+    font-size: 18px;
+    border-radius: 3px;
+    
+}
+
+
+
